@@ -1,0 +1,228 @@
+<html>
+
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <!--LOAD TENSORFLOW.JS-->
+    <!--6et latest version at https://github.com/tensorflow/tfjs-->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+    <script src="ecommerce_data.js"></script>
+    <script src="JQuery/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+
+    <LINK REL=StyleSheet HREF="ecommerce_estilo.css" TYPE="text/css" MEDIA=screen>
+</head>
+
+<body>
+    <div class="container">
+        <div id="calc_cantidad" class="left">
+            <div class="header">
+                <h2 class="animation a1">Tenemos lo que buscas</h2>
+                <h4 class="animation a2">¿No sabe que tipo de pintura usar?, rellene los campos: </h4>
+                <br>
+            </div>
+
+            <div class="form">
+                <label>Lugar de Aplicación</label>
+                <select class="form-field animation a3" type="opciones" id="place_aplication" name="" style="width: 100%">
+                    <option value="0" >Exterior</option>
+                    <option value="1" >Interior</option>
+                </select>
+
+                <label>Material de Uso</label>
+                <select class="form-field animation a3" type="opciones" id="mat_uso" name="" style="width: 100%">
+                    <option value="0" >Baldosa</option>
+                    <option value="1" >Carton</option>
+                    <option value="2" >Cemento</option>
+                    <option value="3" >Ceramica</option>
+                    <option value="4" >Cielo-Raso</option>
+                    <option value="5" >Concreto</option>
+                    <option value="6" >Eternit</option>
+                    <option value="7" >Fibrocemento</option>
+                    <option value="8" >Hormigon</option>
+                    <option value="9" >Ladrillo</option>
+                    <option value="10" >Ladrillo-Caravista</option>
+                    <option value="11" >Madera</option>
+                    <option value="12" >Mapresa</option>
+                    <option value="13" >Material-Bituminoso</option>
+                    <option value="14" >Pavimento</option>
+                    <option value="15" >Pintura</option>
+                    <option value="16" >Prefabricado</option>
+                    <option value="17" >PVC</option>
+                    <option value="18" >Sillar</option>
+                    <option value="19" >Teja</option>
+                    <option value="20" >Yeso</option>
+                </select>
+                <label>Características</label>
+                <select class="form-field animation a3" type="opciones" id="lavable" name="" style="width: 100%">
+                    <option value="0" >Lavable</option>
+                    <option value="1" >No-Lavable</option>
+                    <option value="2" >Semi-Lavable</option>
+                </select>
+
+                <button class="animation a6" onclick="generate_ML()">Start</button>
+            </div>
+        </div>
+
+        <div id="derecho" class="right"></div>
+
+    </div>
+
+</body>
+
+<script>
+    function get_data() {
+        var place_aplication = $("#place_aplication").val();
+        var mat_uso = $("#mat_uso").val();
+        var lavable = $("#lavable").val();
+
+        let arr_guardar = [];
+        arr_guardar.push(place_aplication);
+        arr_guardar.push(mat_uso);
+        arr_guardar.push(lavable);
+
+        return arr_guardar.map((i) => Number(i));
+    }
+
+    function clear_form() {
+        $("#place_aplication").val("");
+        $("#mat_uso").val("");
+        $("#lavable").val("");
+    }
+
+    function generate_ML() {
+        var arreglo = get_data();
+        console.log(arreglo);
+        var intro = document.getElementById('derecho');
+        doEcommerce(arreglo)
+            .then((indice_img) => {
+                clear_form();
+                //pintura, Area, Material de aplicacion, cantidad de pintura
+                material_aplic_pintura = [];
+                cadena = "";
+                cadena += "<div class='header'>";
+                cadena += "<h2 class='animation a1'>Tenemos lo que buscas</h2>";
+                cadena += "<h4 class='animation a2'>¿Cuanta pintura necesita?, rellene los campos: </h4><br></div>";
+
+                cadena += "<div class='form'>";
+                cadena += "<label>Área a pintar (m2)</label>";
+                cadena += "<input class='form-field animation a3' id='area' placeholder='Ingrese el Área a pintar'>";
+                cadena += "<label>Material de Aplicación</label>";
+                cadena += "<select class='form-field animation a3' type='opciones' id='place_aplication' style='width: 100%'>"
+
+                if (indice_img == 0) {
+                    intro.className = 'impermealizante';
+                    material_aplic_pintura.push("Brocha");
+                }
+                if (indice_img == 1) {
+                    intro.className = 'imprimante';
+                    material_aplic.push("Brocha");
+                    material_aplic_pintura.push("Plancha");
+                }
+                if (indice_img == 2) {
+                    intro.className = 'latex';
+                    material_aplic_pintura.push("Brocha");
+                }
+                if (indice_img == 3) {
+                    intro.className = 'selladorAcr';
+                    material_aplic_pintura.push("Brocha");
+                    material_aplic_pintura.push("Pistola de aire");
+                }
+                if (indice_img == 4) {
+                    intro.className = 'sellador';
+                    material_aplic_pintura.push("Brocha");
+                    material_aplic_pintura.push("Pistola de aire");
+                }
+                if (indice_img == 5) {
+                    intro.className = 'temple';
+                    material_aplic_pintura.push("Brocha");
+                    material_aplic_pintura.push("Plancha");
+                }
+
+                for (let i = 0; i < material_aplic_pintura.length; i++) {
+                    cadena += "<option value='" + i + "' >" + material_aplic_pintura[i] + "</option>";
+                }
+                cadena += "</select>";
+                cadena += "<button id='calcular' class='animation a6' onclick=''>Calcular cantidad</button></div>";
+                $("#calc_cantidad").html(cadena);
+
+            });
+        //alert(indice_img);
+    }
+
+    async function trainModel(xTrain, yTrain, xTest, yTest) {
+        const model = tf.sequential();
+        const learningRate = .01; // cambiable, learningRate
+        const numberOfEpochs = 100; // cambiable, epocas
+        const optimizer = tf.train.adam(learningRate);
+
+        model.add(tf.layers.dense({
+            units: 10, // cambiable, capas ocultas
+            activation: 'sigmoid',
+            inputShape: [xTrain.shape[1]]
+        }));
+
+        model.add(tf.layers.dense({
+            units: 6,
+            activation: 'softmax'
+        }));
+
+        model.compile({
+            optimizer: optimizer,
+            loss: 'categoricalCrossentropy',
+            metrics: ['accuracy']
+        });
+
+        const history = await model.fit(xTrain, yTrain, {
+            epochs: numberOfEpochs,
+            validationData: [xTest, yTest],
+            callbacks: {
+                onEpochEnd: async(epoch, logs) => {
+                    console.log("Epoca: " + epoch + " Logs:" + logs.loss);
+                    await tf.nextFrame();
+                },
+            }
+        });
+        return model;
+    }
+
+    async function doEcommerce(arreglo) {
+        const [xTrain, yTrain, xTest, yTest] = getEcommerceData(.25); //cambiable, porcentaje de datos de prueba
+
+        model = await trainModel(xTrain, yTrain, xTest, yTest);
+
+        const valores_input = arreglo;
+        //console.log(valores_input);
+        //debugger;
+        const input = tf.tensor2d(valores_input, [1, 3]);
+
+        const prediction = model.predict(input);
+        //alert(prediction);
+
+        const predictionWithArgMax = model.predict(input).argMax(-1).dataSync();
+        //alert(predictionWithArgMax);
+
+
+        const xData = xTest.dataSync();
+        const yTrue = yTest.argMax(-1).dataSync();
+
+        const predictions = await model.predict(xTest);
+        const yPred = predictions.argMax(-1).dataSync();
+
+        var correct = 0;
+        var wrong = 0;
+
+        for (var i = 0; i < yTrue.length; i++) {
+            if (yTrue[i] == yPred[i]) {
+                correct++;
+            } else {
+                wrong++;
+            }
+        }
+        alert("Tasa de error de prediccion: " + (wrong / yTrue.length));
+        return predictionWithArgMax;
+    }
+</script>
+
+</html>
